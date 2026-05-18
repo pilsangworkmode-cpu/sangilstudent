@@ -508,7 +508,11 @@
             );
 
             if (student) {
-                studentImg.src = student.filename;
+                // 한글 파일명을 안전하게 인코딩하여 파일 경로 생성
+                const encodedFilename = encodeURIComponent(student.filename.split('/').pop());
+                const finalPath = IMAGE_FOLDER + encodedFilename;
+
+                studentImg.src = finalPath;
                 studentName.textContent = student.name;
                 studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
                 filePathDisplay.textContent = `파일 경로: ${student.filename}`;
