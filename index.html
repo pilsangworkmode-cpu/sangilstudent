@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts: Inter & Noto Sans KR -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
         body {
             font-family: 'Noto Sans KR', 'Inter', sans-serif;
@@ -17,6 +20,7 @@
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
         }
+
         .header-logo {
             width: 48px;
             height: 48px;
@@ -29,6 +33,7 @@
             font-weight: 800;
             font-size: 1.5rem;
         }
+
         .control-bar {
             background-color: white;
             border-bottom: 1px solid #e2e8f0;
@@ -37,12 +42,14 @@
             gap: 1.5rem;
             align-items: center;
         }
+
         .select-group {
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
             flex: 1;
         }
+
         .select-label {
             font-size: 10px;
             font-weight: 700;
@@ -50,6 +57,7 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
+
         select {
             appearance: none;
             background-color: #f8fafc;
@@ -64,10 +72,12 @@
             background-position: right 0.75rem center;
             background-size: 1.25em 1.25em;
         }
+
         select:focus {
             ring: 2px solid #6366f1;
             border-color: #6366f1;
         }
+
         .student-display-card {
             background-color: white;
             padding: 1.5rem;
@@ -78,6 +88,7 @@
             flex-direction: column;
             align-items: center;
         }
+
         .student-image-frame {
             width: 320px;
             height: 420px;
@@ -88,18 +99,36 @@
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
             position: relative;
         }
+
         .student-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             filter: grayscale(0.1);
         }
+
         @keyframes fadeInOut {
-            0% { opacity: 0; transform: translate(-50%, 10px); }
-            10% { opacity: 1; transform: translate(-50%, 0); }
-            90% { opacity: 1; transform: translate(-50%, 0); }
-            100% { opacity: 0; transform: translate(-50%, 10px); }
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
         }
+
         .exit-tooltip-container {
             position: fixed;
             bottom: 5rem;
@@ -114,6 +143,7 @@
             animation: fadeInOut 2.5s forwards;
             min-width: 280px;
         }
+
         .decorative-blob {
             position: absolute;
             width: 16rem;
@@ -126,6 +156,7 @@
         }
     </style>
 </head>
+
 <body class="min-h-screen flex flex-col relative overflow-hidden">
 
     <!-- Header Section -->
@@ -153,7 +184,7 @@
                 <option value="">선택</option>
             </select>
         </div>
-        
+
         <div class="select-group">
             <label class="select-label">Class / 반</label>
             <select id="classSelect" disabled>
@@ -170,7 +201,8 @@
 
         <div class="flex flex-col gap-1 w-full md:w-32 mt-4 md:mt-0">
             <label class="select-label opacity-0">&nbsp;</label>
-            <button class="bg-indigo-600 text-white rounded-lg px-4 py-3 font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
+            <button
+                class="bg-indigo-600 text-white rounded-lg px-4 py-3 font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
                 조회하기
             </button>
         </div>
@@ -181,15 +213,18 @@
         <div id="studentCard" class="student-display-card invisible">
             <div class="student-image-frame">
                 <!-- onerror 로직을 개선하여 외부 placeholder 서비스 장애 시에도 대비 -->
-                <img id="studentImg" src="" alt="Student Portrait" class="student-image" onerror="handleImageError(this)">
+                <img id="studentImg" src="" alt="Student Portrait" class="student-image"
+                    onerror="handleImageError(this)">
                 <div id="imgLoader" class="absolute inset-0 flex items-center justify-center bg-slate-100 hidden">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 </div>
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-20"></div>
             </div>
-            
+
             <div class="mt-8 text-center px-4">
-                <span id="studentInfoText" class="text-[12px] font-bold text-slate-400 tracking-[0.3em] uppercase mb-1 block">Student Identity</span>
+                <span id="studentInfoText"
+                    class="text-[12px] font-bold text-slate-400 tracking-[0.3em] uppercase mb-1 block">Student
+                    Identity</span>
                 <h2 id="studentName" class="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter">학생 이름</h2>
             </div>
         </div>
@@ -205,19 +240,22 @@
 
         <!-- Decorative Background Elements -->
         <div class="decorative-blob top-10 right-10"></div>
-        <div class="decorative-blob bottom-10 left-10" style="background-color: #dbeafe; width: 20rem; height: 20rem;"></div>
+        <div class="decorative-blob bottom-10 left-10" style="background-color: #dbeafe; width: 20rem; height: 20rem;">
+        </div>
     </main>
 
     <!-- Footer / Status Bar -->
-    <footer class="px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white gap-4">
+    <footer
+        class="px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white gap-4">
         <div class="flex items-center gap-4 text-slate-400 text-xs font-medium">
             <span id="filePathDisplay" class="truncate max-w-[200px] md:max-w-none">파일 경로: /images/students/...</span>
             <span class="w-1 h-1 bg-slate-600 rounded-full hidden md:block"></span>
             <span>시스템 상태: 정상</span>
         </div>
-        
+
         <div class="relative">
-            <button id="backBtn" class="flex items-center gap-2 bg-slate-800 px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-700 transition-all text-sm">
+            <button id="backBtn"
+                class="flex items-center gap-2 bg-slate-800 px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-700 transition-all text-sm">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
                 뒤로 가기
             </button>
@@ -226,7 +264,8 @@
 
     <!-- Exit Tooltip -->
     <div id="exitTooltip" class="exit-tooltip-container hidden">
-        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification</div>
+        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification
+        </div>
         <p class="text-sm font-medium">어플을 종료하시려면 브라우저 창을 닫아주세요.</p>
         <div class="absolute top-full right-8 w-4 h-4 bg-red-500 rotate-45 -mt-2"></div>
     </div>
@@ -253,7 +292,7 @@
             '30510정상미.jpg'
         ];
 
-        const IMAGE_FOLDER = 'students/'; // 이미지 파일이 들어있는 폴더
+        const IMAGE_FOLDER = './students/'; // 이미지 파일이 들어있는 폴더
 
         // 파싱된 데이터 저장
         let students = [];
@@ -262,7 +301,7 @@
             students = studentFiles.map(filenameStr => {
                 // 확장자 제거
                 const namePart = filenameStr.split('.')[0];
-                
+
                 // 학년(1), 반(2), 번호(2), 이름(나머지)
                 const grade = namePart.substring(0, 1);
                 const classNum = namePart.substring(1, 3);
@@ -295,10 +334,10 @@
         // 선택 메뉴 초기화
         function initSelects() {
             const grades = [...new Set(students.map(s => s.grade))].sort();
-            
-            gradeSelect.innerHTML = '<option value="">선택</option>' + 
+
+            gradeSelect.innerHTML = '<option value="">선택</option>' +
                 grades.map(g => `<option value="${g}">${g}학년</option>`).join('');
-            
+
             gradeSelect.addEventListener('change', (e) => {
                 const grade = e.target.value;
                 updateClassOptions(grade);
@@ -331,9 +370,9 @@
 
             const classes = [...new Set(students.filter(s => s.grade === grade).map(s => s.classNum))].sort();
             classSelect.disabled = false;
-            classSelect.innerHTML = '<option value="">선택</option>' + 
+            classSelect.innerHTML = '<option value="">선택</option>' +
                 classes.map(c => `<option value="${c}">${parseInt(c)}반</option> `).join('');
-            
+
             numSelect.disabled = true;
             numSelect.innerHTML = '<option value="">선택</option>';
         }
@@ -351,7 +390,7 @@
                 .sort();
 
             numSelect.disabled = false;
-            numSelect.innerHTML = '<option value="">선택</option>' + 
+            numSelect.innerHTML = '<option value="">선택</option>' +
                 nums.map(n => `<option value="${n}">${parseInt(n)}번</option>`).join('');
         }
 
@@ -370,27 +409,40 @@
             `)}`;
         }
 
+        // 1. 폴더 경로를 상대 경로의 정석인 './'로 시작하게 변경
+        //const IMAGE_FOLDER = './students/';
+
+        // ... 생략 ...
+
         function showStudent(grade, classNum, studentNum) {
             if (!studentNum) return;
 
-            const student = students.find(s => 
-                s.grade === grade && 
-                s.classNum === classNum && 
+            const student = students.find(s =>
+                s.grade === grade &&
+                s.classNum === classNum &&
                 s.studentNum === studentNum
             );
 
             if (student) {
-                // 사용자가 파일명을 숫자로만 변경했으므로, 학년+반+번호 조합으로 파일명 생성
+                // 2. 숫자로 된 ID 생성
                 const numericId = student.grade + student.classNum + student.studentNum;
+
+                // 3. 확장자 대소문자 문제 방지를 위해 .jpg 사용 (실제 파일도 소문자 .jpg여야 함)
                 const finalPath = IMAGE_FOLDER + numericId + '.jpg';
 
-                console.log('이미지 요청 경로 (ID 기반):', finalPath);
-                
+                console.log('--- 학생 조회 디버깅 ---');
+                console.log('1. 학급 정보:', grade, '학년', classNum, '반', studentNum, '번');
+                console.log('2. 매칭 이름:', student.name);
+                console.log('3. 요청 이미지 경로:', finalPath);
+                console.log('-----------------------');
+
                 studentImg.src = finalPath;
                 studentName.textContent = student.name;
                 studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
-                filePathDisplay.textContent = `가상 경로: ${IMAGE_FOLDER}${student.filename} -> 매칭 파일: ${numericId}.jpg`;
-                
+
+                // 하단 상태바에 경로 표시 (확인용)
+                filePathDisplay.textContent = `요청 경로: ${finalPath} (파일이 해당 위치에 있는지 확인하세요)`;
+
                 placeholderView.classList.add('hidden');
                 studentCard.classList.remove('invisible');
             }
@@ -413,7 +465,7 @@
 
         // 브라우저 뒤로가기 감지 (pushState 트릭)
         window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
+        window.onpopstate = function () {
             showExitTooltip();
             window.history.pushState(null, null, window.location.href);
         };
@@ -426,4 +478,5 @@
         });
     </script>
 </body>
+
 </html>
