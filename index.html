@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts: Inter & Noto Sans KR -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
         body {
             font-family: 'Noto Sans KR', 'Inter', sans-serif;
@@ -17,6 +20,7 @@
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
         }
+
         .header-logo {
             width: 48px;
             height: 48px;
@@ -29,6 +33,7 @@
             font-weight: 800;
             font-size: 1.5rem;
         }
+
         .control-bar {
             background-color: white;
             border-bottom: 1px solid #e2e8f0;
@@ -37,12 +42,14 @@
             gap: 1.5rem;
             align-items: center;
         }
+
         .select-group {
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
             flex: 1;
         }
+
         .select-label {
             font-size: 10px;
             font-weight: 700;
@@ -50,6 +57,7 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
+
         select {
             appearance: none;
             background-color: #f8fafc;
@@ -64,10 +72,12 @@
             background-position: right 0.75rem center;
             background-size: 1.25em 1.25em;
         }
+
         select:focus {
             ring: 2px solid #6366f1;
             border-color: #6366f1;
         }
+
         .student-display-card {
             background-color: white;
             padding: 1.5rem;
@@ -78,6 +88,7 @@
             flex-direction: column;
             align-items: center;
         }
+
         .student-image-frame {
             width: 320px;
             height: 420px;
@@ -88,18 +99,36 @@
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
             position: relative;
         }
+
         .student-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             filter: grayscale(0.1);
         }
+
         @keyframes fadeInOut {
-            0% { opacity: 0; transform: translate(-50%, 10px); }
-            10% { opacity: 1; transform: translate(-50%, 0); }
-            90% { opacity: 1; transform: translate(-50%, 0); }
-            100% { opacity: 0; transform: translate(-50%, 10px); }
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
         }
+
         .exit-tooltip-container {
             position: fixed;
             bottom: 5rem;
@@ -114,6 +143,7 @@
             animation: fadeInOut 2.5s forwards;
             min-width: 280px;
         }
+
         .decorative-blob {
             position: absolute;
             width: 16rem;
@@ -126,6 +156,7 @@
         }
     </style>
 </head>
+
 <body class="min-h-screen flex flex-col relative overflow-hidden">
 
     <!-- Header Section -->
@@ -153,7 +184,7 @@
                 <option value="">선택</option>
             </select>
         </div>
-        
+
         <div class="select-group">
             <label class="select-label">Class / 반</label>
             <select id="classSelect" disabled>
@@ -170,7 +201,8 @@
 
         <div class="flex flex-col gap-1 w-full md:w-32 mt-4 md:mt-0">
             <label class="select-label opacity-0">&nbsp;</label>
-            <button class="bg-indigo-600 text-white rounded-lg px-4 py-3 font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
+            <button
+                class="bg-indigo-600 text-white rounded-lg px-4 py-3 font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
                 조회하기
             </button>
         </div>
@@ -181,15 +213,18 @@
         <div id="studentCard" class="student-display-card invisible">
             <div class="student-image-frame">
                 <!-- onerror 로직을 개선하여 외부 placeholder 서비스 장애 시에도 대비 -->
-                <img id="studentImg" src="" alt="Student Portrait" class="student-image" onerror="handleImageError(this)">
+                <img id="studentImg" src="" alt="Student Portrait" class="student-image"
+                    onerror="handleImageError(this)">
                 <div id="imgLoader" class="absolute inset-0 flex items-center justify-center bg-slate-100 hidden">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 </div>
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-20"></div>
             </div>
-            
+
             <div class="mt-8 text-center px-4">
-                <span id="studentInfoText" class="text-[12px] font-bold text-slate-400 tracking-[0.3em] uppercase mb-1 block">Student Identity</span>
+                <span id="studentInfoText"
+                    class="text-[12px] font-bold text-slate-400 tracking-[0.3em] uppercase mb-1 block">Student
+                    Identity</span>
                 <h2 id="studentName" class="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter">학생 이름</h2>
             </div>
         </div>
@@ -205,19 +240,22 @@
 
         <!-- Decorative Background Elements -->
         <div class="decorative-blob top-10 right-10"></div>
-        <div class="decorative-blob bottom-10 left-10" style="background-color: #dbeafe; width: 20rem; height: 20rem;"></div>
+        <div class="decorative-blob bottom-10 left-10" style="background-color: #dbeafe; width: 20rem; height: 20rem;">
+        </div>
     </main>
 
     <!-- Footer / Status Bar -->
-    <footer class="px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white gap-4">
+    <footer
+        class="px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white gap-4">
         <div class="flex items-center gap-4 text-slate-400 text-xs font-medium">
             <span id="filePathDisplay" class="truncate max-w-[200px] md:max-w-none">파일 경로: /images/students/...</span>
             <span class="w-1 h-1 bg-slate-600 rounded-full hidden md:block"></span>
             <span>시스템 상태: 정상</span>
         </div>
-        
+
         <div class="relative">
-            <button id="backBtn" class="flex items-center gap-2 bg-slate-800 px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-700 transition-all text-sm">
+            <button id="backBtn"
+                class="flex items-center gap-2 bg-slate-800 px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-700 transition-all text-sm">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
                 뒤로 가기
             </button>
@@ -226,7 +264,8 @@
 
     <!-- Exit Tooltip -->
     <div id="exitTooltip" class="exit-tooltip-container hidden">
-        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification</div>
+        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification
+        </div>
         <p class="text-sm font-medium">어플을 종료하시려면 브라우저 창을 닫아주세요.</p>
         <div class="absolute top-full right-8 w-4 h-4 bg-red-500 rotate-45 -mt-2"></div>
     </div>
@@ -239,174 +278,178 @@
          * 1 (학년) / 01 (반) / 01 (번호) / 구주안 (이름)
          */
 
-        // 학생 데이터베이스 (사용자가 이 파일명을 실제 파일들로 교체하면 됩니다)
-        // 실제 운영 시에는 서버사이드 언어로 이 리스트를 자동 생성하거나
-        // 직접 파일명들을 여기에 적어주어야 합니다.
+        /**
+         * 학생 데이터베이스 (중요: 성함 매핑을 위해 이 리스트가 필요합니다)
+         * --------------------------------------------------
+         * 파일명이 '10101.jpg'로 변경되었어도, 아래 리스트의 파일명을 기준으로
+         * 이름(구주안 등)을 표시합니다. 학생이 추가되면 이 배열에 'ID이름.jpg' 형식을 추가하세요.
+         */
         const studentFiles = [
             '10101구주안.jpg',
-'10102김도원.jpg',
-'10103김아린.jpg',
-'10104김우진.jpg',
-'10105박세현.jpg',
-'10106박소은.jpg',
-'10107박주한.jpg',
-'10108서준우.jpg',
-'10109양나영.jpg',
-'10110우지윤.jpg',
-'10111장일웅.jpg',
-'10112조혜리.jpg',
-'10201김동민.jpg',
-'10202김민호.jpg',
-'10203김범준.jpg',
-'10204김한결.jpg',
-'10205김현수.jpg',
-'10206문석준.jpg',
-'10207박정원.jpg',
-'10208엄재이.jpg',
-'10209이정하.jpg',
-'10210이지원.jpg',
-'10211주환.jpg',
-'10212최민준.jpg',
-'10301강주원.jpg',
-'10302김민우.jpg',
-'10303김천운.jpg',
-'10304손주원.jpg',
-'10305안태호.jpg',
-'10306양태인.jpg',
-'10307위서진.jpg',
-'10308유주안.jpg',
-'10309이승우.jpg',
-'10310이용준.jpg',
-'10311조석현.jpg',
-'10312지상빈.jpg',
-'10313최민혁.jpg',
-'10401김예완.jpg',
-'10402김우재.jpg',
-'10403김은찬.jpg',
-'10404김찬이.jpg',
-'10405김호철.jpg',
-'10406문희철.jpg',
-'10407박은율.jpg',
-'10408박준후.jpg',
-'10409배은비.jpg',
-'10410송혜진.jpg',
-'10411양승범.jpg',
-'10412최진혁.jpg',
-'10501김민지.jpg',
-'10502김정인.jpg',
-'10503김주한.jpg',
-'10504김지원.jpg',
-'10505나상원.jpg',
-'10506류나현.jpg',
-'10507박현진.jpg',
-'10508배현준.jpg',
-'10509송강연.jpg',
-'10510이서연.jpg',
-'10511이주훈.jpg',
-'10512차아인.jpg',
-'10513홍상엽.jpg',
-'10514홍성욱.jpg',
-'10601강주아.jpg',
-'10602김다빈.jpg',
-'10603김미정.jpg',
-'10604김주은.jpg',
-'10605명준혁.jpg',
-'10606서은빈.jpg',
-'10607신나나.jpg',
-'10608안지훈.jpg',
-'10609오재호.jpg',
-'10610윤승태.jpg',
-'10611이우진.jpg',
-'10612임유나.jpg',
-'10613장연두.jpg',
-'10701김규리.jpg',
-'10702김도희.jpg',
-'10703김세은.jpg',
-'10704나예지.jpg',
-'10705박지윤.jpg',
-'10706박한솔.jpg',
-'10707박혜민.jpg',
-'10708선윤재.jpg',
-'10709성세진.jpg',
-'10710송유찬.jpg',
-'10711신유라.jpg',
-'10712염지수.jpg',
-'10713이힘찬.jpg',
-'10714임주빈.jpg',
-'10715임지현.jpg',
-'10716장예성.jpg',
-'10717정서인.jpg',
-'10718조현서.jpg',
-'10719최가빈.jpg',
-'10720황수정.jpg',
-'10801김가은.jpg',
-'10802김도형.jpg',
-'10803김로사.jpg',
-'10804김별.jpg',
-'10805김시현.jpg',
-'10806김은유.jpg',
-'10807김지광.jpg',
-'10808김태은.jpg',
-'10809박소아.jpg',
-'10810박예화.jpg',
-'10811성연아.jpg',
-'10812안단테.jpg',
-'10813안지호.jpg',
-'10814이지우.jpg',
-'10815이찬희.jpg',
-'10816임예지.jpg',
-'10817정지원.jpg',
-'10818정해린.jpg',
-'10819조현영.jpg',
-'10820추헌규.jpg',
-'10901장서준.jpg',
-'10902이두안.jpg',
-'10903김세현.jpg',
-'10904김아인.jpg',
-'10905김혜원.jpg',
-'10906나하나.jpg',
-'10907문하은.jpg',
-'10908박요엘.jpg',
-'10909박유빈.jpg',
-'10910박태훈.jpg',
-'10911신혜원.jpg',
-'10912옥윤철.jpg',
-'10913이재빈.jpg',
-'10914이주평.jpg',
-'10915이하윤.jpg',
-'10916최희원.jpg',
-'10917한도윤.jpg',
-'10918한채호.jpg',
-'11001강도연.jpg',
-'11002김태군.jpg',
-'11003나예지.jpg',
-'11004남유미.jpg',
-'11005노한성.jpg',
-'11006박수빈.jpg',
-'11007반태호.jpg',
-'11008소정임.jpg',
-'11009신연후.jpg',
-'11010안채윤.jpg',
-'11011우성후.jpg',
-'11012이보미.jpg',
-'11013임승주.jpg',
-'11014조영은.jpg',
-'11015조윤우.jpg',
-'11016진정익.jpg',
-'11017추현정.jpg',
-'11018허동관.jpg'
+            '10102김도원.jpg',
+            '10103김아린.jpg',
+            '10104김우진.jpg',
+            '10105박세현.jpg',
+            '10106박소은.jpg',
+            '10107박주한.jpg',
+            '10108서준우.jpg',
+            '10109양나영.jpg',
+            '10110우지윤.jpg',
+            '10111장일웅.jpg',
+            '10112조혜리.jpg',
+            '10201김동민.jpg',
+            '10202김민호.jpg',
+            '10203김범준.jpg',
+            '10204김한결.jpg',
+            '10205김현수.jpg',
+            '10206문석준.jpg',
+            '10207박정원.jpg',
+            '10208엄재이.jpg',
+            '10209이정하.jpg',
+            '10210이지원.jpg',
+            '10211주환.jpg',
+            '10212최민준.jpg',
+            '10301강주원.jpg',
+            '10302김민우.jpg',
+            '10303김천운.jpg',
+            '10304손주원.jpg',
+            '10305안태호.jpg',
+            '10306양태인.jpg',
+            '10307위서진.jpg',
+            '10308유주안.jpg',
+            '10309이승우.jpg',
+            '10310이용준.jpg',
+            '10311조석현.jpg',
+            '10312지상빈.jpg',
+            '10313최민혁.jpg',
+            '10401김예완.jpg',
+            '10402김우재.jpg',
+            '10403김은찬.jpg',
+            '10404김찬이.jpg',
+            '10405김호철.jpg',
+            '10406문희철.jpg',
+            '10407박은율.jpg',
+            '10408박준후.jpg',
+            '10409배은비.jpg',
+            '10410송혜진.jpg',
+            '10411양승범.jpg',
+            '10412최진혁.jpg',
+            '10501김민지.jpg',
+            '10502김정인.jpg',
+            '10503김주한.jpg',
+            '10504김지원.jpg',
+            '10505나상원.jpg',
+            '10506류나현.jpg',
+            '10507박현진.jpg',
+            '10508배현준.jpg',
+            '10509송강연.jpg',
+            '10510이서연.jpg',
+            '10511이주훈.jpg',
+            '10512차아인.jpg',
+            '10513홍상엽.jpg',
+            '10514홍성욱.jpg',
+            '10601강주아.jpg',
+            '10602김다빈.jpg',
+            '10603김미정.jpg',
+            '10604김주은.jpg',
+            '10605명준혁.jpg',
+            '10606서은빈.jpg',
+            '10607신나나.jpg',
+            '10608안지훈.jpg',
+            '10609오재호.jpg',
+            '10610윤승태.jpg',
+            '10611이우진.jpg',
+            '10612임유나.jpg',
+            '10613장연두.jpg',
+            '10701김규리.jpg',
+            '10702김도희.jpg',
+            '10703김세은.jpg',
+            '10704나예지.jpg',
+            '10705박지윤.jpg',
+            '10706박한솔.jpg',
+            '10707박혜민.jpg',
+            '10708선윤재.jpg',
+            '10709성세진.jpg',
+            '10710송유찬.jpg',
+            '10711신유라.jpg',
+            '10712염지수.jpg',
+            '10713이힘찬.jpg',
+            '10714임주빈.jpg',
+            '10715임지현.jpg',
+            '10716장예성.jpg',
+            '10717정서인.jpg',
+            '10718조현서.jpg',
+            '10719최가빈.jpg',
+            '10720황수정.jpg',
+            '10801김가은.jpg',
+            '10802김도형.jpg',
+            '10803김로사.jpg',
+            '10804김별.jpg',
+            '10805김시현.jpg',
+            '10806김은유.jpg',
+            '10807김지광.jpg',
+            '10808김태은.jpg',
+            '10809박소아.jpg',
+            '10810박예화.jpg',
+            '10811성연아.jpg',
+            '10812안단테.jpg',
+            '10813안지호.jpg',
+            '10814이지우.jpg',
+            '10815이찬희.jpg',
+            '10816임예지.jpg',
+            '10817정지원.jpg',
+            '10818정해린.jpg',
+            '10819조현영.jpg',
+            '10820추헌규.jpg',
+            '10901장서준.jpg',
+            '10902이두안.jpg',
+            '10903김세현.jpg',
+            '10904김아인.jpg',
+            '10905김혜원.jpg',
+            '10906나하나.jpg',
+            '10907문하은.jpg',
+            '10908박요엘.jpg',
+            '10909박유빈.jpg',
+            '10910박태훈.jpg',
+            '10911신혜원.jpg',
+            '10912옥윤철.jpg',
+            '10913이재빈.jpg',
+            '10914이주평.jpg',
+            '10915이하윤.jpg',
+            '10916최희원.jpg',
+            '10917한도윤.jpg',
+            '10918한채호.jpg',
+            '11001강도연.jpg',
+            '11002김태군.jpg',
+            '11003나예지.jpg',
+            '11004남유미.jpg',
+            '11005노한성.jpg',
+            '11006박수빈.jpg',
+            '11007반태호.jpg',
+            '11008소정임.jpg',
+            '11009신연후.jpg',
+            '11010안채윤.jpg',
+            '11011우성후.jpg',
+            '11012이보미.jpg',
+            '11013임승주.jpg',
+            '11014조영은.jpg',
+            '11015조윤우.jpg',
+            '11016진정익.jpg',
+            '11017추현정.jpg',
+            '11018허동관.jpg'
+
         ];
 
-        const IMAGE_FOLDER = './students/'; // 이미지 파일이 들어있는 폴더
+        const IMAGE_FOLDER = 'students/'; // 이미지 파일이 들어있는 폴더
 
         // 파싱된 데이터 저장
         let students = [];
 
         function parseStudentData() {
-            students = studentFiles.map(filename => {
+            students = studentFiles.map(filenameStr => {
                 // 확장자 제거
-                const namePart = filename.split('.')[0];
-                
+                const namePart = filenameStr.split('.')[0];
+
                 // 학년(1), 반(2), 번호(2), 이름(나머지)
                 const grade = namePart.substring(0, 1);
                 const classNum = namePart.substring(1, 3);
@@ -418,7 +461,7 @@
                     classNum,
                     studentNum,
                     name,
-                    filename: IMAGE_FOLDER + filename
+                    filename: filenameStr // 파일명만 저장
                 };
             });
         }
@@ -439,10 +482,10 @@
         // 선택 메뉴 초기화
         function initSelects() {
             const grades = [...new Set(students.map(s => s.grade))].sort();
-            
-            gradeSelect.innerHTML = '<option value="">선택</option>' + 
+
+            gradeSelect.innerHTML = '<option value="">선택</option>' +
                 grades.map(g => `<option value="${g}">${g}학년</option>`).join('');
-            
+
             gradeSelect.addEventListener('change', (e) => {
                 const grade = e.target.value;
                 updateClassOptions(grade);
@@ -475,9 +518,9 @@
 
             const classes = [...new Set(students.filter(s => s.grade === grade).map(s => s.classNum))].sort();
             classSelect.disabled = false;
-            classSelect.innerHTML = '<option value="">선택</option>' + 
+            classSelect.innerHTML = '<option value="">선택</option>' +
                 classes.map(c => `<option value="${c}">${parseInt(c)}반</option> `).join('');
-            
+
             numSelect.disabled = true;
             numSelect.innerHTML = '<option value="">선택</option>';
         }
@@ -495,7 +538,7 @@
                 .sort();
 
             numSelect.disabled = false;
-            numSelect.innerHTML = '<option value="">선택</option>' + 
+            numSelect.innerHTML = '<option value="">선택</option>' +
                 nums.map(n => `<option value="${n}">${parseInt(n)}번</option>`).join('');
         }
 
@@ -514,35 +557,31 @@
             `)}`;
         }
 
-        /* index.html 내의 showStudent 함수 부분을 아래와 같이 수정했습니다. */
-function showStudent(grade, classNum, studentNum) {
-    if (!studentNum) return;
+        function showStudent(grade, classNum, studentNum) {
+            if (!studentNum) return;
 
-    const student = students.find(s => 
-        s.grade === grade && 
-        s.classNum === classNum && 
-        s.studentNum === studentNum
-    );
+            const student = students.find(s =>
+                s.grade === grade &&
+                s.classNum === classNum &&
+                s.studentNum === studentNum
+            );
 
-    if (student) {
-        // 1. 파일명만 추출해서 인코딩 (이미지 폴더명은 인코딩하지 않음)
-        const encodedFilename = encodeURIComponent(student.filename);
-        
-        // 2. 최종 경로 생성 (상대 경로 ./ 를 붙여 더 명확하게 지정)
-        const finalPath = './' + IMAGE_FOLDER + encodedFilename;
+            if (student) {
+                // 사용자가 파일명을 숫자로만 변경했으므로, 학년+반+번호 조합으로 파일명 생성
+                const numericId = student.grade + student.classNum + student.studentNum;
+                const finalPath = IMAGE_FOLDER + numericId + '.jpg';
 
-        // 콘솔에 출력되는 이 주소를 클릭해서 이미지가 실제로 열리는지 확인할 수 있습니다.
-        console.log("확인 중인 이미지 전체 경로:", window.location.origin + '/' + IMAGE_FOLDER + encodedFilename);
-        
-        studentImg.src = finalPath;
-        studentName.textContent = student.name;
-        studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
-        filePathDisplay.textContent = `파일 경로: ${IMAGE_FOLDER}${student.filename}`;
-        
-        placeholderView.classList.add('hidden');
-        studentCard.classList.remove('invisible');
-    }
-}
+                console.log('이미지 요청 경로 (ID 기반):', finalPath);
+
+                studentImg.src = finalPath;
+                studentName.textContent = student.name;
+                studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
+                filePathDisplay.textContent = `가상 경로: ${IMAGE_FOLDER}${student.filename} -> 매칭 파일: ${numericId}.jpg`;
+
+                placeholderView.classList.add('hidden');
+                studentCard.classList.remove('invisible');
+            }
+        }
 
         function resetStudentView() {
             studentCard.classList.add('invisible');
@@ -561,7 +600,7 @@ function showStudent(grade, classNum, studentNum) {
 
         // 브라우저 뒤로가기 감지 (pushState 트릭)
         window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function() {
+        window.onpopstate = function () {
             showExitTooltip();
             window.history.pushState(null, null, window.location.href);
         };
@@ -574,4 +613,5 @@ function showStudent(grade, classNum, studentNum) {
         });
     </script>
 </body>
+
 </html>
