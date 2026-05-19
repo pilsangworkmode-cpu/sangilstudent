@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,125 +9,108 @@
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts: Inter & Noto Sans KR -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Noto Sans KR', 'Inter', sans-serif;
             background-color: #F0F2F5;
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
+            word-break: keep-all;
         }
-
         .header-logo {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             background-color: #4f46e5;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
         }
-
         .control-bar {
             background-color: white;
             border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 2.5rem;
+            padding: 1rem;
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
         }
-
+        @media (min-width: 768px) {
+            .control-bar {
+                flex-direction: row;
+                padding: 1rem 2.5rem;
+                gap: 1.5rem;
+            }
+        }
         .select-group {
             display: flex;
             flex-direction: column;
             gap: 0.25rem;
             flex: 1;
         }
-
         .select-label {
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 9px;
+            font-weight: 800;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
-
         select {
             appearance: none;
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            padding: 0.8rem 1rem;
             font-weight: 600;
+            font-size: 1rem;
             outline: none;
+            width: 100%;
             transition: all 0.2s;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
             background-size: 1.25em 1.25em;
         }
-
         select:focus {
-            ring: 2px solid #6366f1;
             border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
-
         .student-display-card {
             background-color: white;
-            padding: 1.5rem;
-            border-radius: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             border: 1px solid #f1f5f9;
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+            max-width: 320px;
         }
-
         .student-image-frame {
-            width: 320px;
-            height: 420px;
+            width: 100%;
+            aspect-ratio: 3 / 4;
             background-color: #f1f5f9;
-            border-radius: 32px;
+            border-radius: 24px;
             overflow: hidden;
-            border: 4px solid #f8fafc;
+            border: 3px solid #f8fafc;
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
             position: relative;
         }
-
         .student-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(0.1);
         }
-
         @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
-
-            10% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-
-            90% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, 10px);
-            }
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            10% { opacity: 1; transform: translate(-50%, 0); }
+            90% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, 20px); }
         }
-
         .exit-tooltip-container {
             position: fixed;
             bottom: 5rem;
@@ -136,136 +118,125 @@
             transform: translateX(-50%);
             background-color: #ef4444;
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            z-index: 50;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
             animation: fadeInOut 2.5s forwards;
-            min-width: 280px;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
         }
-
         .decorative-blob {
             position: absolute;
-            width: 16rem;
-            height: 16rem;
+            width: 12rem;
+            height: 12rem;
             background-color: #e0e7ff;
             border-radius: 9999px;
-            filter: blur(80px);
-            opacity: 0.6;
+            filter: blur(60px);
+            opacity: 0.4;
             z-index: -10;
         }
     </style>
 </head>
-
-<body class="min-h-screen flex flex-col relative overflow-hidden">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
     <!-- Header Section -->
-    <header class="bg-white border-b border-slate-200 px-10 py-6 flex justify-between items-center shadow-sm">
-        <div class="flex items-center gap-4">
+    <header class="bg-white border-b border-slate-200 px-5 md:px-10 py-4 md:py-6 flex justify-between items-center shadow-sm sticky top-0 z-40">
+        <div class="flex items-center gap-3 md:gap-4">
             <div class="header-logo">상</div>
             <div>
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">상미고 학생 확인</h1>
-                <p class="text-sm text-slate-500 mt-1 font-medium italic">Sangmi High School Student ID System</p>
+                <h1 class="text-lg md:text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">상미고 학생 확인</h1>
+                <p class="text-[10px] md:text-sm text-slate-500 mt-0.5 md:mt-1 font-medium italic">Sangmi ID System</p>
             </div>
         </div>
-        <div class="hidden md:flex gap-3">
-            <div class="bg-green-100 text-green-700 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2">
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                시스템 정상 작동 중
-            </div>
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-[10px] font-bold text-green-600 hidden sm:block">ONLINE</span>
         </div>
     </header>
 
     <!-- Control Bar (Selection Menus) -->
-    <nav class="control-bar flex flex-wrap md:flex-nowrap">
-        <div class="select-group">
-            <label class="select-label">Grade / 학년</label>
-            <select id="gradeSelect">
-                <option value="">선택</option>
-            </select>
+    <nav class="control-bar shadow-sm">
+        <div class="flex flex-row gap-2 w-full md:flex-1">
+            <div class="select-group">
+                <label class="select-label">학년</label>
+                <select id="gradeSelect">
+                    <option value="">선택</option>
+                </select>
+            </div>
+            
+            <div class="select-group">
+                <label class="select-label">반</label>
+                <select id="classSelect" disabled>
+                    <option value="">선택</option>
+                </select>
+            </div>
         </div>
 
-        <div class="select-group">
-            <label class="select-label">Class / 반</label>
-            <select id="classSelect" disabled>
-                <option value="">선택</option>
-            </select>
-        </div>
-
-        <div class="select-group">
-            <label class="select-label">Number / 번호</label>
-            <select id="numSelect" disabled>
-                <option value="">선택</option>
-            </select>
-        </div>
-
-        <div class="flex flex-col gap-1 w-full md:w-32 mt-4 md:mt-0">
-            <label class="select-label opacity-0">&nbsp;</label>
-            <button
-                class="bg-indigo-600 text-white rounded-lg px-4 py-3 font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
-                조회하기
+        <div class="flex flex-row gap-2 w-full md:flex-1 items-end">
+            <div class="select-group">
+                <label class="select-label">번호</label>
+                <select id="numSelect" disabled>
+                    <option value="">선택</option>
+                </select>
+            </div>
+            
+            <button id="searchBtn" class="bg-indigo-600 text-white rounded-xl px-4 py-3 font-bold active:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100 min-w-[80px]">
+                조회
             </button>
         </div>
     </nav>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex items-center justify-center p-6 md:p-10 relative">
+    <main class="flex-1 flex flex-col items-center justify-center p-4 md:p-10 relative">
         <div id="studentCard" class="student-display-card invisible">
             <div class="student-image-frame">
-                <!-- onerror 로직을 개선하여 외부 placeholder 서비스 장애 시에도 대비 -->
-                <img id="studentImg" src="" alt="Student Portrait" class="student-image"
-                    onerror="handleImageError(this)">
+                <img id="studentImg" src="" alt="Student Portrait" class="student-image" onerror="handleImageError(this)">
                 <div id="imgLoader" class="absolute inset-0 flex items-center justify-center bg-slate-100 hidden">
                     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 </div>
-                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-20"></div>
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-16 md:h-20"></div>
             </div>
-
-            <div class="mt-8 text-center px-4">
-                <span id="studentInfoText"
-                    class="text-[12px] font-bold text-slate-400 tracking-[0.3em] uppercase mb-1 block">Student
-                    Identity</span>
-                <h2 id="studentName" class="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter">학생 이름</h2>
+            
+            <div class="mt-6 md:mt-8 text-center px-2">
+                <span id="studentInfoText" class="text-[10px] md:text-[12px] font-bold text-slate-400 tracking-[0.2em] uppercase mb-1 block">Student Identity</span>
+                <h2 id="studentName" class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">학생 이름</h2>
             </div>
         </div>
 
         <!-- Initial Placeholder View -->
-        <div id="placeholderView" class="flex flex-col items-center justify-center text-slate-400 z-10">
-            <div class="w-20 h-20 bg-slate-200/50 rounded-full flex items-center justify-center mb-6">
-                <i data-lucide="user-search" class="w-10 h-10 opacity-40"></i>
+        <div id="placeholderView" class="flex flex-col items-center justify-center text-slate-400 z-10 py-10">
+            <div class="w-16 h-16 md:w-20 md:h-20 bg-slate-200/50 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                <i data-lucide="user-search" class="w-8 h-8 md:w-10 md:h-10 opacity-40"></i>
             </div>
-            <h3 class="text-xl font-bold text-slate-600 mb-2">상미고 학생 조회</h3>
-            <p class="text-sm text-center">상단 메뉴에서 학년, 반, 번호를<br>선택하여 조회를 시작하세요.</p>
+            <h3 class="text-lg md:text-xl font-bold text-slate-600 mb-2">학생 조회</h3>
+            <p class="text-xs md:text-sm text-center">학년, 반, 번호를 선택하고<br>조회 버튼을 눌러주세요.</p>
         </div>
 
         <!-- Decorative Background Elements -->
-        <div class="decorative-blob top-10 right-10"></div>
-        <div class="decorative-blob bottom-10 left-10" style="background-color: #dbeafe; width: 20rem; height: 20rem;">
-        </div>
+        <div class="decorative-blob top-10 right-0"></div>
+        <div class="decorative-blob bottom-10 left-0" style="background-color: #dbeafe; width: 15rem; height: 15rem;"></div>
     </main>
 
     <!-- Footer / Status Bar -->
-    <footer
-        class="px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center bg-slate-900 text-white gap-4">
-        <div class="flex items-center gap-4 text-slate-400 text-xs font-medium">
-            <span id="filePathDisplay" class="truncate max-w-[200px] md:max-w-none">파일 경로: /images/students/...</span>
-            <span class="w-1 h-1 bg-slate-600 rounded-full hidden md:block"></span>
-            <span>시스템 상태: 정상</span>
+    <footer class="px-5 md:px-10 py-4 md:py-6 flex flex-row justify-between items-center bg-slate-900 text-white sticky bottom-0 z-40">
+        <div class="flex items-center gap-2 text-slate-400 text-[10px] font-medium overflow-hidden">
+            <i data-lucide="info" class="w-3 h-3 flex-shrink-0"></i>
+            <span id="filePathDisplay" class="truncate max-w-[150px] md:max-w-none">대기 중</span>
         </div>
-
+        
         <div class="relative">
-            <button id="backBtn"
-                class="flex items-center gap-2 bg-slate-800 px-6 py-2 rounded-full border border-slate-700 hover:bg-slate-700 transition-all text-sm">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                뒤로 가기
+            <button id="backBtn" class="flex items-center gap-2 bg-slate-800 px-4 md:px-6 py-2 rounded-full border border-slate-700 active:bg-slate-700 transition-all text-xs md:text-sm">
+                <i data-lucide="log-out" class="w-3 h-3 md:w-4 md:h-4"></i>
+                종료
             </button>
         </div>
     </footer>
 
     <!-- Exit Tooltip -->
     <div id="exitTooltip" class="exit-tooltip-container hidden">
-        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification
-        </div>
+        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification</div>
         <p class="text-sm font-medium">어플을 종료하시려면 브라우저 창을 닫아주세요.</p>
         <div class="absolute top-full right-8 w-4 h-4 bg-red-500 rotate-45 -mt-2"></div>
     </div>
@@ -292,7 +263,7 @@
             '30510정상미.jpg'
         ];
 
-        const IMAGE_FOLDER = 'students/'; // 이미지 파일이 들어있는 폴더
+        const IMAGE_FOLDER = './students/'; // 이미지 파일이 들어있는 폴더
 
         // 파싱된 데이터 저장
         let students = [];
@@ -301,7 +272,7 @@
             students = studentFiles.map(filenameStr => {
                 // 확장자 제거
                 const namePart = filenameStr.split('.')[0];
-
+                
                 // 학년(1), 반(2), 번호(2), 이름(나머지)
                 const grade = namePart.substring(0, 1);
                 const classNum = namePart.substring(1, 3);
@@ -322,6 +293,7 @@
         const gradeSelect = document.getElementById('gradeSelect');
         const classSelect = document.getElementById('classSelect');
         const numSelect = document.getElementById('numSelect');
+        const searchBtn = document.getElementById('searchBtn');
         const studentCard = document.getElementById('studentCard');
         const studentImg = document.getElementById('studentImg');
         const studentName = document.getElementById('studentName');
@@ -334,10 +306,10 @@
         // 선택 메뉴 초기화
         function initSelects() {
             const grades = [...new Set(students.map(s => s.grade))].sort();
-
-            gradeSelect.innerHTML = '<option value="">선택</option>' +
+            
+            gradeSelect.innerHTML = '<option value="">선택</option>' + 
                 grades.map(g => `<option value="${g}">${g}학년</option>`).join('');
-
+            
             gradeSelect.addEventListener('change', (e) => {
                 const grade = e.target.value;
                 updateClassOptions(grade);
@@ -352,10 +324,20 @@
             });
 
             numSelect.addEventListener('change', (e) => {
+                resetStudentView();
+            });
+
+            // 조회 버튼 클릭 시에만 이미지 표시
+            searchBtn.addEventListener('click', () => {
                 const grade = gradeSelect.value;
                 const classNum = classSelect.value;
-                const studentNum = e.target.value;
-                showStudent(grade, classNum, studentNum);
+                const studentNum = numSelect.value;
+                
+                if (grade && classNum && studentNum) {
+                    showStudent(grade, classNum, studentNum);
+                } else {
+                    alert('학년, 반, 번호를 모두 선택해주세요.');
+                }
             });
         }
 
@@ -370,9 +352,9 @@
 
             const classes = [...new Set(students.filter(s => s.grade === grade).map(s => s.classNum))].sort();
             classSelect.disabled = false;
-            classSelect.innerHTML = '<option value="">선택</option>' +
+            classSelect.innerHTML = '<option value="">선택</option>' + 
                 classes.map(c => `<option value="${c}">${parseInt(c)}반</option> `).join('');
-
+            
             numSelect.disabled = true;
             numSelect.innerHTML = '<option value="">선택</option>';
         }
@@ -390,59 +372,58 @@
                 .sort();
 
             numSelect.disabled = false;
-            numSelect.innerHTML = '<option value="">선택</option>' +
+            numSelect.innerHTML = '<option value="">선택</option>' + 
                 nums.map(n => `<option value="${n}">${parseInt(n)}번</option>`).join('');
         }
 
-        // 이미지 로딩 실패 시 처리 (외부 서비스 의존성 제거)
+        // 이미지 로딩 실패 시 처리
         function handleImageError(img) {
-            // 무한 루프 방지
+            const currentSrc = img.src;
+            
+            // 1. .jpg 실패 시 .JPG (대문자) 시도
+            if (currentSrc.toLowerCase().endsWith('.jpg') && !currentSrc.endsWith('.JPG')) {
+                console.log('소문자 .jpg 실패, 대문자 .JPG 시도 중...');
+                img.src = currentSrc.replace(/\.jpg$/i, '.JPG');
+                return;
+            }
+            
+            // 2. 둘 다 실패 시 SVG 플레이스홀더 표시
             img.onerror = null;
-            // 로컬 브라우저에서 생성 가능한 SVG 플레이스홀더 (네트워크 연결 필요 없음)
             img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
                 <svg width="320" height="420" xmlns="http://www.w3.org/2000/svg">
                     <rect width="100%" height="100%" fill="#f1f5f9"/>
-                    <text x="50%" y="50%" font-family="sans-serif" font-size="20" fill="#94a3b8" text-anchor="middle" dominant-baseline="middle">
-                        사진 없음
+                    <text x="50%" y="50%" font-family="sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle" dominant-baseline="middle">
+                        사진을 찾을 수 없음 (404)
                     </text>
                 </svg>
             `)}`;
         }
 
-        // 1. 폴더 경로를 상대 경로의 정석인 './'로 시작하게 변경
-        //const IMAGE_FOLDER = './students/';
-
-        // ... 생략 ...
-
         function showStudent(grade, classNum, studentNum) {
             if (!studentNum) return;
 
-            const student = students.find(s =>
-                s.grade === grade &&
-                s.classNum === classNum &&
+            const student = students.find(s => 
+                s.grade === grade && 
+                s.classNum === classNum && 
                 s.studentNum === studentNum
             );
 
             if (student) {
-                // 2. 숫자로 된 ID 생성
                 const numericId = student.grade + student.classNum + student.studentNum;
+                // 경로를 ./students/ 형식으로 명시하여 상대 경로를 더 확실히 함
+                const finalPath = './' + IMAGE_FOLDER + numericId + '.jpg';
 
-                // 3. 확장자 대소문자 문제 방지를 위해 .jpg 사용 (실제 파일도 소문자 .jpg여야 함)
-                const finalPath = IMAGE_FOLDER + numericId + '.jpg';
-
-                console.log('--- 학생 조회 디버깅 ---');
-                console.log('1. 학급 정보:', grade, '학년', classNum, '반', studentNum, '번');
-                console.log('2. 매칭 이름:', student.name);
-                console.log('3. 요청 이미지 경로:', finalPath);
-                console.log('-----------------------');
-
+                console.log('조회 시도:', student.name, '->', finalPath);
+                
+                // 이미지 초기화 후 로드 (캐시 문제 방지)
+                studentImg.removeAttribute('src');
+                studentImg.onerror = () => handleImageError(studentImg);
                 studentImg.src = finalPath;
+
                 studentName.textContent = student.name;
                 studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
-
-                // 하단 상태바에 경로 표시 (확인용)
-                filePathDisplay.textContent = `요청 경로: ${finalPath} (파일이 해당 위치에 있는지 확인하세요)`;
-
+                filePathDisplay.textContent = `확인 중: ${numericId}.jpg`;
+                
                 placeholderView.classList.add('hidden');
                 studentCard.classList.remove('invisible');
             }
@@ -465,7 +446,7 @@
 
         // 브라우저 뒤로가기 감지 (pushState 트릭)
         window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function () {
+        window.onpopstate = function() {
             showExitTooltip();
             window.history.pushState(null, null, window.location.href);
         };
@@ -478,5 +459,4 @@
         });
     </script>
 </body>
-
 </html>
