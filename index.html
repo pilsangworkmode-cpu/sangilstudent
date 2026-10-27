@@ -4,314 +4,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
     <title>상미고 학생 확인</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts: Inter & Noto Sans KR -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"
         rel="stylesheet">
     <style>
+        :root {
+            --bg: #f3f5fa;
+            --surface: #ffffff;
+            --ink: #0f172a;
+            --muted: #4b5870;
+            --line: #dde3ee;
+            --accent: #4338ca;
+            --accent-ink: #ffffff;
+            --accent-soft: #eceefe;
+            --photo-bg: #e6eaf3;
+            --r: 12px;
+            --shadow: 0 1px 2px rgba(15, 23, 42, .06), 0 4px 12px rgba(15, 23, 42, .05);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1120;
+                --surface: #161b2f;
+                --ink: #e9edf8;
+                --muted: #a3aec8;
+                --line: #272e49;
+                --accent: #9aa0f7;
+                --accent-ink: #0d1120;
+                --accent-soft: #232a54;
+                --photo-bg: #212840;
+                --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 4px 12px rgba(0, 0, 0, .3);
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        html { -webkit-text-size-adjust: 100%; }
+
         body {
-            font-family: 'Noto Sans KR', 'Inter', sans-serif;
-            background-color: #F0F2F5;
-            color: #1e293b;
-            -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            min-height: 100dvh;
+            font-family: 'Noto Sans KR', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            font-size: 1rem;
+            line-height: 1.5;
             word-break: keep-all;
+            -webkit-tap-highlight-color: transparent;
+            font-variant-numeric: tabular-nums;
         }
 
-        .header-logo {
-            width: 40px;
-            height: 40px;
-            background-color: #4f46e5;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 1.25rem;
+        ::selection { background: var(--accent); color: var(--accent-ink); }
+
+        button, input { font: inherit; color: inherit; }
+
+        button { cursor: pointer; }
+
+        :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+        .wrap { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+
+        /* 머리말 */
+        .top { padding: 1rem 0 .75rem; }
+
+        .top .wrap { display: flex; flex-direction: column; gap: .75rem; }
+
+        .brand { display: flex; align-items: center; gap: .75rem; }
+
+        .logo {
+            width: 40px; height: 40px; border-radius: var(--r);
+            background: var(--accent); color: var(--accent-ink);
+            display: grid; place-items: center; font-weight: 800; font-size: 1.25rem;
         }
 
-        .control-bar {
-            background-color: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .brand h1 { margin: 0; font-size: 1.25rem; font-weight: 800; line-height: 1.2; }
+
+        .search { position: relative; flex: 1; }
+
+        .search svg {
+            position: absolute; left: .85rem; top: 50%; translate: 0 -50%;
+            width: 20px; height: 20px; color: var(--muted); pointer-events: none;
+        }
+
+        .search input {
+            width: 100%; height: 48px; padding: 0 3rem 0 2.75rem;
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+            font-size: 1rem; font-weight: 500;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .search input::-webkit-search-cancel-button { appearance: none; display: none; }
+
+        .search input::placeholder { color: var(--muted); opacity: 1; }
+
+        .search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+        .search .clear {
+            position: absolute; right: .35rem; top: 50%; translate: 0 -50%;
+            width: 40px; height: 40px; border: 0; border-radius: var(--r);
+            background: transparent; color: var(--muted); display: none; place-items: center;
+        }
+
+        .search .clear:hover { background: var(--accent-soft); }
+        .search.has-text .clear { display: grid; }
+        .search .clear svg { position: static; translate: none; width: 18px; height: 18px; }
+
+        @media (min-width: 768px) {
+            .wrap { padding: 0 2rem; }
+            .top .wrap { flex-direction: row; align-items: center; justify-content: space-between; gap: 2rem; }
+            .search { max-width: 420px; }
+        }
+
+        /* 학년·반 선택 (스크롤해도 위에 고정) */
+        .filters {
+            position: sticky; top: 0; z-index: 10;
+            background: var(--bg); border-bottom: 1px solid var(--line);
+            padding: .5rem 0;
+        }
+
+        .filters .wrap { display: flex; flex-direction: column; gap: .5rem; }
+
+        .seg {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px;
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+        }
+
+        .seg button {
+            min-height: 44px; border: 0; border-radius: 8px; background: transparent;
+            font-weight: 700; color: var(--muted);
+            transition: background-color .15s, color .15s;
+        }
+
+        .seg button:hover { background: var(--accent-soft); color: var(--ink); }
+        .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+        .chips {
+            display: flex; gap: .5rem; overflow-x: auto; padding-bottom: 2px;
+            scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+            scroll-snap-type: x proximity;
+        }
+
+        .chips button {
+            flex: none; min-width: 56px; min-height: 44px; padding: 0 1rem;
+            border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+            font-weight: 700; scroll-snap-align: center;
+            transition: background-color .15s, border-color .15s;
+        }
+
+        .chips button:hover { border-color: var(--accent); }
+        .chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+        @media (min-width: 768px) {
+            .filters .wrap { flex-direction: row; align-items: center; gap: 1rem; }
+            .seg { width: 280px; flex: none; }
+        }
+
+        /* 명렬표 */
+        main { padding: 1rem 0 3rem; }
+
+        .roster-head { display: flex; align-items: baseline; gap: .6rem; margin: .25rem 0 1rem; }
+        .roster-head h2 { margin: 0; font-size: 1.375rem; font-weight: 800; }
+        .roster-head span { color: var(--muted); font-weight: 500; }
+
+        .grid {
+            list-style: none; margin: 0; padding: 0;
+            display: grid; gap: .75rem;
+            grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
         }
 
         @media (min-width: 768px) {
-            .control-bar {
-                flex-direction: row;
-                padding: 1rem 2.5rem;
-                gap: 1.5rem;
-            }
+            .grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
         }
 
-        .select-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            flex: 1;
+        .card {
+            width: 100%; padding: .5rem; text-align: left;
+            background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+            box-shadow: var(--shadow); display: block;
+            transition: border-color .15s, transform .15s;
         }
 
-        .select-label {
-            font-size: 9px;
-            font-weight: 800;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
+        .card:hover { border-color: var(--accent); }
+        .card:active { transform: scale(.98); }
+
+        .photo {
+            aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden; background: var(--photo-bg);
+            display: grid; place-items: center; position: relative;
         }
 
-        select {
-            appearance: none;
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.75rem;
-            padding: 0.8rem 1rem;
-            font-weight: 600;
-            font-size: 1rem;
-            outline: none;
-            width: 100%;
-            transition: all 0.2s;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.25em 1.25em;
+        .photo img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity .2s; }
+        .photo img.ready { opacity: 1; }
+
+        .photo .initial { font-size: 2.5rem; font-weight: 800; color: var(--muted); }
+
+        .card .name { display: block; margin-top: .5rem; font-weight: 800; font-size: 1.0625rem; line-height: 1.25; }
+        .card .meta { display: block; font-size: .8125rem; color: var(--muted); font-weight: 500; }
+
+        .empty { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+        .empty strong { display: block; color: var(--ink); font-size: 1.125rem; margin-bottom: .25rem; }
+
+        /* 크게 보기 */
+        dialog {
+            width: min(92vw, 460px); max-height: 94dvh; padding: 0; border: 0; border-radius: var(--r);
+            background: var(--surface); color: var(--ink); box-shadow: 0 24px 60px rgba(0, 0, 0, .35);
+            overflow: auto;
         }
 
-        select:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        dialog::backdrop { background: rgba(8, 12, 28, .72); }
+
+        .viewer { padding: .75rem; display: flex; flex-direction: column; gap: .75rem; }
+
+        .viewer .photo { max-height: 66dvh; width: 100%; margin: 0 auto; }
+
+        .viewer .who { text-align: center; }
+        .viewer .who h3 { margin: 0; font-size: 2.25rem; font-weight: 800; line-height: 1.15; }
+        .viewer .who p { margin: .15rem 0 0; color: var(--muted); font-weight: 500; }
+
+        .viewer .bar { display: grid; grid-template-columns: 1fr auto 1fr; gap: .5rem; align-items: center; }
+
+        .btn {
+            min-height: 48px; padding: 0 1rem; border: 1px solid var(--line); border-radius: var(--r);
+            background: var(--surface); font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center; gap: .35rem;
         }
 
-        .student-display-card {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 32px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border: 1px solid #f1f5f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 320px;
-        }
+        .btn:hover:not(:disabled, .close) { border-color: var(--accent); background: var(--accent-soft); }
+        .btn.close:hover { filter: brightness(1.1); }
+        .btn:disabled { opacity: .4; cursor: default; }
+        .btn svg { width: 20px; height: 20px; }
+        .btn.close { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
-        .student-image-frame {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            background-color: #f1f5f9;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 3px solid #f8fafc;
-            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
+        .viewer .pos { color: var(--muted); font-weight: 500; font-size: .875rem; }
 
-        .student-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-
-            10% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-
-            90% {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(-50%, 20px);
-            }
-        }
-
-        .exit-tooltip-container {
-            position: fixed;
-            bottom: 5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ef4444;
-            color: white;
-            padding: 0.75rem 1.25rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            animation: fadeInOut 2.5s forwards;
-            width: 90%;
-            max-width: 300px;
-            text-align: center;
-        }
-
-        .decorative-blob {
-            position: absolute;
-            width: 12rem;
-            height: 12rem;
-            background-color: #e0e7ff;
-            border-radius: 9999px;
-            filter: blur(60px);
-            opacity: 0.4;
-            z-index: -10;
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+<body>
 
-    <!-- Header Section -->
-    <header
-        class="bg-white border-b border-slate-200 px-5 md:px-10 py-4 md:py-6 flex justify-between items-center shadow-sm sticky top-0 z-40">
-        <div class="flex items-center gap-3 md:gap-4">
-            <div class="header-logo">상</div>
-            <div>
-                <h1 class="text-lg md:text-2xl font-black text-slate-900 tracking-tight leading-none uppercase">상미고 학생
-                    확인</h1>
-                <p class="text-[10px] md:text-sm text-slate-500 mt-0.5 md:mt-1 font-medium italic">Sangmi ID System</p>
+    <header class="top">
+        <div class="wrap">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">상</div>
+                <h1>상미고 학생 확인</h1>
             </div>
-        </div>
-        <div class="flex items-center gap-2">
-            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            <span class="text-[10px] font-bold text-green-600 hidden sm:block">ONLINE</span>
-        </div>
-    </header>
-
-    <!-- Control Bar (Selection Menus) -->
-    <nav class="control-bar shadow-sm">
-        <!-- 첫 번째 줄: 드롭다운 선택 메뉴 -->
-        <div class="flex flex-col md:flex-row gap-3 w-full">
-            <div class="flex flex-row gap-2 flex-1">
-                <div class="select-group">
-                    <label class="select-label">학년</label>
-                    <select id="gradeSelect">
-                        <option value="">선택</option>
-                    </select>
-                </div>
-
-                <div class="select-group">
-                    <label class="select-label">반</label>
-                    <select id="classSelect" disabled>
-                        <option value="">선택</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex flex-row gap-2 flex-1 items-end">
-                <div class="select-group">
-                    <label class="select-label">번호 (이름)</label>
-                    <select id="numSelect" disabled>
-                        <option value="">선택</option>
-                    </select>
-                </div>
-
-                <button id="searchBtn"
-                    class="bg-indigo-600 text-white rounded-xl px-4 py-3 font-bold active:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100 min-w-[80px]">
-                    조회
+            <div class="search" id="searchBox">
+                <i data-lucide="search" aria-hidden="true"></i>
+                <input type="search" id="nameSearchInput" placeholder="이름으로 찾기 (예: 구주안)"
+                    aria-label="학생 이름 검색" autocomplete="off" enterkeyhint="search">
+                <button type="button" class="clear" id="clearBtn" aria-label="검색어 지우기">
+                    <i data-lucide="x" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
+    </header>
 
-        <!-- 두 번째 줄: 이름 검색 바 및 자동완성 -->
-        <div class="w-full relative border-t border-slate-100 pt-3 flex flex-col gap-1">
-            <label class="select-label">이름으로 즉시 검색</label>
-            <div class="relative flex items-center">
-                <span class="absolute left-3 text-slate-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="w-4 h-4">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </span>
-                <input type="text" id="nameSearchInput" placeholder="학생 이름을 입력하세요 (예: 구주안)"
-                    class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 font-semibold text-sm outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100/50 transition-all">
-            </div>
-            <!-- 자동완성 추천 리스트 (툴팁 스타일) -->
-            <div id="searchSuggestions"
-                class="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl border border-slate-200 shadow-xl max-h-60 overflow-y-auto hidden z-50">
-            </div>
+    <nav class="filters" id="filters" aria-label="학년과 반 선택">
+        <div class="wrap">
+            <div class="seg" id="gradeSeg" role="group" aria-label="학년"></div>
+            <div class="chips" id="classChips" role="group" aria-label="반"></div>
         </div>
     </nav>
 
-    <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col items-center justify-center p-4 md:p-10 relative">
-        <div id="studentCard" class="student-display-card invisible">
-            <div class="student-image-frame">
-                <img id="studentImg" src="" alt="Student Portrait" class="student-image"
-                    onerror="handleImageError(this)">
-                <div id="imgLoader" class="absolute inset-0 flex items-center justify-center bg-slate-100 hidden">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/20 to-transparent h-16 md:h-20">
-                </div>
+    <main>
+        <div class="wrap">
+            <div class="roster-head">
+                <h2 id="rosterTitle"></h2>
+                <span id="rosterCount"></span>
             </div>
-
-            <div class="mt-6 md:mt-8 text-center px-2">
-                <span id="studentInfoText"
-                    class="text-[10px] md:text-[12px] font-bold text-slate-400 tracking-[0.2em] uppercase mb-1 block">Student
-                    Identity</span>
-                <h2 id="studentName" class="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">학생 이름</h2>
+            <ul class="grid" id="grid"></ul>
+            <div class="empty" id="empty" hidden>
+                <strong>일치하는 학생이 없습니다</strong>
+                이름의 일부만 입력해 보세요.
             </div>
-        </div>
-
-        <!-- Initial Placeholder View -->
-        <div id="placeholderView" class="flex flex-col items-center justify-center text-slate-400 z-10 py-10">
-            <div
-                class="w-16 h-16 md:w-20 md:h-20 bg-slate-200/50 rounded-full flex items-center justify-center mb-4 md:mb-6">
-                <i data-lucide="user-search" class="w-8 h-8 md:w-10 md:h-10 opacity-40"></i>
-            </div>
-            <h3 class="text-lg md:text-xl font-bold text-slate-600 mb-2">학생 조회</h3>
-            <p class="text-xs md:text-sm text-center">학년, 반, 번호를 선택하거나<br>이름을 입력하여 조회를 시작하세요.</p>
-        </div>
-
-        <!-- Decorative Background Elements -->
-        <div class="decorative-blob top-10 right-0"></div>
-        <div class="decorative-blob bottom-10 left-0" style="background-color: #dbeafe; width: 15rem; height: 15rem;">
         </div>
     </main>
 
-    <!-- Footer / Status Bar -->
-    <!-- Exit Tooltip -->
-    <div id="exitTooltip" class="exit-tooltip-container hidden">
-        <div class="text-[10px] font-bold uppercase mb-1 opacity-80 letter-spacing-widest">System Exit Notification
+    <dialog id="viewer" aria-label="학생 사진 크게 보기">
+        <div class="viewer">
+            <div class="photo" id="vPhoto"></div>
+            <div class="who">
+                <h3 id="vName"></h3>
+                <p id="vMeta"></p>
+            </div>
+            <div class="bar">
+                <button type="button" class="btn" id="prevBtn"><i data-lucide="chevron-left" aria-hidden="true"></i>이전</button>
+                <span class="pos" id="vPos"></span>
+                <button type="button" class="btn" id="nextBtn">다음<i data-lucide="chevron-right" aria-hidden="true"></i></button>
+            </div>
+            <button type="button" class="btn close" id="closeBtn">닫기</button>
         </div>
-        <p class="text-sm font-medium">어플을 종료하시려면 브라우저 창을 닫아주세요.</p>
-        <div class="absolute top-full right-8 w-4 h-4 bg-red-500 rotate-45 -mt-2"></div>
-    </div>
+    </dialog>
 
     <script>
         /**
-         * 데이터 구성 및 파싱 로직
-         * --------------------------------------------------
-         * 이미지 파일명이 '10101구주안.jpg'와 같은 형식을 가정합니다.
-         * 1 (학년) / 01 (반) / 01 (번호) / 구주안 (이름)
-         */
-
-        /**
-         * 학생 데이터베이스 (중요: 성함 매핑을 위해 이 리스트가 필요합니다)
-         * --------------------------------------------------
-         * 파일명이 '10101.jpg'로 변경되었어도, 아래 리스트의 파일명을 기준으로
-         * 이름(구주안 등)을 표시합니다. 학생이 추가되면 이 배열에 'ID이름.jpg' 형식을 추가하세요.
+         * 학생 데이터: 'ID이름.jpg' 형식 (학년 1자리 + 반 2자리 + 번호 2자리 + 이름).
+         * 학생이 추가되면 이 배열에 같은 형식으로 추가하고, 사진은 students/ID.jpg 로 넣으세요.
          */
         const studentFiles = [
             '10101구주안.jpg',
             '10102김도원.jpg',
-            '10103김아린.jpg',
             '10104김우진.jpg',
             '10105박세현.jpg',
             '10106박소은.jpg',
@@ -319,8 +315,8 @@
             '10108서준우.jpg',
             '10109양나영.jpg',
             '10110우지윤.jpg',
-            '10111장일웅.jpg',
-            '10112조혜리.jpg',
+            '10113김용걸.jpg',
+            '10114조원솔.jpg',
             '10201김동민.jpg',
             '10202김민호.jpg',
             '10203김범준.jpg',
@@ -346,19 +342,15 @@
             '10311조석현.jpg',
             '10312지상빈.jpg',
             '10313최민혁.jpg',
-            '10401김예완.jpg',
             '10402김우재.jpg',
             '10403김은찬.jpg',
             '10404김찬이.jpg',
             '10405김호철.jpg',
             '10406문희철.jpg',
             '10407박은율.jpg',
-            '10408박준후.jpg',
-            '10409배은비.jpg',
-            '10410송혜진.jpg',
             '10411양승범.jpg',
             '10412최진혁.jpg',
-            '10501김민지.jpg',
+            '10501김서하.jpg',
             '10502김정인.jpg',
             '10503김주한.jpg',
             '10504김지원.jpg',
@@ -372,6 +364,7 @@
             '10512차아인.jpg',
             '10513홍상엽.jpg',
             '10514홍성욱.jpg',
+            '10515김단아.jpg',
             '10601강주아.jpg',
             '10602김다빈.jpg',
             '10603김미정.jpg',
@@ -382,9 +375,11 @@
             '10608안지훈.jpg',
             '10609오재호.jpg',
             '10610윤승태.jpg',
-            '10611이우진.jpg',
             '10612임유나.jpg',
             '10613장연두.jpg',
+            '10614임희민.jpg',
+            '10615한지호.jpg',
+            '10616황정호.jpg',
             '10701김규리.jpg',
             '10702김도희.jpg',
             '10703김세은.jpg',
@@ -420,13 +415,12 @@
             '10813안지호.jpg',
             '10814이지우.jpg',
             '10815이찬희.jpg',
-            '10816임예지.jpg',
             '10817정지원.jpg',
             '10818정해린.jpg',
             '10819조현영.jpg',
             '10820추헌규.jpg',
             '10901장서준.jpg',
-            '10902이두안.jpg',
+            '10902LE DINH TUAN.jpg',
             '10903김세현.jpg',
             '10904김아인.jpg',
             '10905김혜원.jpg',
@@ -464,7 +458,6 @@
             '20101고건영.jpg',
             '20102곽민승.jpg',
             '20103권태현.jpg',
-            '20104김도현.jpg',
             '20105김선호.jpg',
             '20106김성태.jpg',
             '20107박민제.jpg',
@@ -484,9 +477,8 @@
             '20209장영록.jpg',
             '20210장채민.jpg',
             '20211전창혁.jpg',
-            '20301김대현.jpg',
+            '20301JIN DAXUAN.jpg',
             '20302남경민.jpg',
-            '20303박동현.jpg',
             '20304송준호.jpg',
             '20305여단비.jpg',
             '20306이상윤.jpg',
@@ -494,7 +486,7 @@
             '20308이은찬.jpg',
             '20309이진성.jpg',
             '20310정현준.jpg',
-            '20401강연우.jpg',
+            '20401GANZORIG OYU.jpg',
             '20402김민경.jpg',
             '20403김민지.jpg',
             '20404김범교.jpg',
@@ -516,7 +508,6 @@
             '20506서지우.jpg',
             '20507이규리.jpg',
             '20508이준길.jpg',
-            '20509이하린.jpg',
             '20510임연준.jpg',
             '20511장하나.jpg',
             '20512정시우.jpg',
@@ -527,7 +518,6 @@
             '20603김연우.jpg',
             '20604김주은.jpg',
             '20605김현진.jpg',
-            '20606도하경.jpg',
             '20607박민영.jpg',
             '20608박서현.jpg',
             '20609박성주.jpg',
@@ -564,14 +554,12 @@
             '20719한윤호.jpg',
             '20720한율.jpg',
             '20801길윤오.jpg',
-            '20802김수민.jpg',
             '20803김수언.jpg',
             '20804김태희.jpg',
             '20805방소연.jpg',
             '20806서유림.jpg',
             '20807송민제.jpg',
             '20808송지윤.jpg',
-            '20809송태영.jpg',
             '20810송현지.jpg',
             '20811안윤슬.jpg',
             '20812어정우.jpg',
@@ -579,8 +567,7 @@
             '20814윤수환.jpg',
             '20815이성환.jpg',
             '20816이소윤.jpg',
-            '20817이용준.jpg',
-            '20818이은혁.jpg',
+            '20818이지안.jpg',
             '20819이한승.jpg',
             '20820차은하.jpg',
             '20821추현우.jpg',
@@ -608,7 +595,6 @@
             '30106박준우.jpg',
             '30107송의진.jpg',
             '30108송준호.jpg',
-            '30109이진서.jpg',
             '30110진장한.jpg',
             '30111최시원.jpg',
             '30112최지욱.jpg',
@@ -639,7 +625,6 @@
             '30401권세영.jpg',
             '30402김다한.jpg',
             '30403김민우.jpg',
-            '30404김민찬.jpg',
             '30405김준표.jpg',
             '30406노혜림.jpg',
             '30407백종호.jpg',
@@ -677,7 +662,7 @@
             '30616전건웅.jpg',
             '30617정은경.jpg',
             '30618한단비.jpg',
-            '30701송다림.jpg',
+            '30701SONGDUOLIN.jpg',
             '30702고은별.jpg',
             '30703김은지.jpg',
             '30704방현서.jpg',
@@ -772,248 +757,174 @@
 
         ];
 
-        const IMAGE_FOLDER = './students/'; // 이미지 파일이 들어있는 폴더
+        const IMAGE_FOLDER = './students/';
 
-        // 파싱된 데이터 저장
-        let students = [];
+        const students = studentFiles.map(f => {
+            const id = f.split('.')[0];
+            return {
+                id: id.slice(0, 5),
+                grade: +id[0],
+                cls: +id.slice(1, 3),
+                num: +id.slice(3, 5),
+                name: id.slice(5),
+            };
+        }).sort((a, b) => a.id.localeCompare(b.id));
 
-        function parseStudentData() {
-            students = studentFiles.map(filenameStr => {
-                // 확장자 제거
-                const namePart = filenameStr.split('.')[0];
+        const $ = id => document.getElementById(id);
+        const gradeSeg = $('gradeSeg'), classChips = $('classChips'), grid = $('grid');
+        const searchInput = $('nameSearchInput'), searchBox = $('searchBox'), filters = $('filters');
+        const viewer = $('viewer');
 
-                // 학년(1), 반(2), 번호(2), 이름(나머지)
-                const grade = namePart.substring(0, 1);
-                const classNum = namePart.substring(1, 3);
-                const studentNum = namePart.substring(3, 5);
-                const name = namePart.substring(5);
+        const grades = [...new Set(students.map(s => s.grade))];
+        const classesOf = g => [...new Set(students.filter(s => s.grade === g).map(s => s.cls))];
 
-                return {
-                    grade,
-                    classNum,
-                    studentNum,
-                    name,
-                    filename: filenameStr // 파일명만 저장
-                };
-            });
+        const state = { grade: grades[0], cls: classesOf(grades[0])[0], query: '', list: [], index: -1 };
+
+        // 마지막으로 본 학년·반 기억 (저장이 막힌 브라우저에서는 건너뜀)
+        try {
+            const saved = JSON.parse(localStorage.getItem('sangmi-roster') || 'null');
+            if (saved && classesOf(saved.grade).includes(saved.cls)) { state.grade = saved.grade; state.cls = saved.cls; }
+        } catch (e) { }
+
+        function save() {
+            try { localStorage.setItem('sangmi-roster', JSON.stringify({ grade: state.grade, cls: state.cls })); } catch (e) { }
         }
 
-        // DOM 요소
-        const gradeSelect = document.getElementById('gradeSelect');
-        const classSelect = document.getElementById('classSelect');
-        const numSelect = document.getElementById('numSelect');
-        const searchBtn = document.getElementById('searchBtn');
-        const studentCard = document.getElementById('studentCard');
-        const studentImg = document.getElementById('studentImg');
-        const studentName = document.getElementById('studentName');
-        const studentInfoText = document.getElementById('studentInfoText');
-        const placeholderView = document.getElementById('placeholderView');
-        const nameSearchInput = document.getElementById('nameSearchInput');
-        const searchSuggestions = document.getElementById('searchSuggestions');
-
-        // 선택 메뉴 초기화
-        function initSelects() {
-            const grades = [...new Set(students.map(s => s.grade))].sort();
-
-            gradeSelect.innerHTML = '<option value="">선택</option>' +
-                grades.map(g => `<option value="${g}">${g}학년</option>`).join('');
-
-            gradeSelect.addEventListener('change', (e) => {
-                const grade = e.target.value;
-                updateClassOptions(grade);
-                resetStudentView();
-            });
-
-            classSelect.addEventListener('change', (e) => {
-                const grade = gradeSelect.value;
-                const classNum = e.target.value;
-                updateNumOptions(grade, classNum);
-                resetStudentView();
-            });
-
-            numSelect.addEventListener('change', (e) => {
-                resetStudentView();
-            });
-
-            // 조회 버튼 클릭 시에만 이미지 표시
-            searchBtn.addEventListener('click', () => {
-                const grade = gradeSelect.value;
-                const classNum = classSelect.value;
-                const studentNum = numSelect.value;
-
-                if (grade && classNum && studentNum) {
-                    showStudent(grade, classNum, studentNum);
-                } else {
-                    alert('학년, 반, 번호를 모두 선택해주세요.');
-                }
-            });
-
-            // 실시간 이름 검색 기능 추가
-            nameSearchInput.addEventListener('input', (e) => {
-                const query = e.target.value.trim().toLowerCase();
-                if (!query) {
-                    searchSuggestions.classList.add('hidden');
-                    return;
-                }
-
-                const matches = students.filter(s => s.name.toLowerCase().includes(query));
-
-                if (matches.length > 0) {
-                    searchSuggestions.innerHTML = matches.map(s => `
-                        <div class="px-4 py-3 hover:bg-indigo-50 active:bg-indigo-100 cursor-pointer border-b border-slate-100 transition-colors flex justify-between items-center" data-grade="${s.grade}" data-class="${s.classNum}" data-num="${s.studentNum}">
-                            <div>
-                                <span class="font-bold text-slate-800 text-sm md:text-base">${s.name}</span>
-                                <span class="text-xs text-slate-500 ml-2">${parseInt(s.grade)}학년 ${parseInt(s.classNum)}반 ${parseInt(s.studentNum)}번</span>
-                            </div>
-                            <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-1 rounded-full">즉시 보기</span>
-                        </div>
-                    `).join('');
-                    searchSuggestions.classList.remove('hidden');
-                } else {
-                    searchSuggestions.innerHTML = `
-                        <div class="px-4 py-4 text-center text-slate-400 text-sm">
-                            일치하는 학생이 없습니다.
-                        </div>
-                    `;
-                    searchSuggestions.classList.remove('hidden');
-                }
-            });
-
-            // 자동완성 아이템 클릭 시
-            searchSuggestions.addEventListener('click', (e) => {
-                const item = e.target.closest('[data-grade]');
-                if (item) {
-                    const grade = item.getAttribute('data-grade');
-                    const classNum = item.getAttribute('data-class');
-                    const studentNum = item.getAttribute('data-num');
-
-                    // 선택 메뉴 동기화
-                    gradeSelect.value = grade;
-                    updateClassOptions(grade);
-                    classSelect.value = classNum;
-                    updateNumOptions(grade, classNum);
-                    numSelect.value = studentNum;
-
-                    // 즉시 학생 표시
-                    showStudent(grade, classNum, studentNum);
-
-                    // 상태 초기화
-                    nameSearchInput.value = '';
-                    searchSuggestions.classList.add('hidden');
-                }
-            });
-
-            // 화면 외부 클릭 시 추천 리스트 숨기기
-            document.addEventListener('click', (e) => {
-                if (!nameSearchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
-                    searchSuggestions.classList.add('hidden');
-                }
-            });
+        function photoNode(s, eager) {
+            const box = document.createElement('div');
+            box.className = 'photo';
+            const img = new Image();
+            img.alt = `${s.name} 사진`;
+            img.decoding = 'async';
+            if (!eager) img.loading = 'lazy';
+            img.onload = () => img.classList.add('ready');
+            img.onerror = () => {
+                img.remove();
+                const t = document.createElement('span');
+                t.className = 'initial';
+                t.textContent = s.name[0];
+                t.title = '사진이 없습니다';
+                box.append(t);
+            };
+            img.src = IMAGE_FOLDER + s.id + '.jpg';
+            box.append(img);
+            return box;
         }
 
-        function updateClassOptions(grade) {
-            if (!grade) {
-                classSelect.disabled = true;
-                classSelect.innerHTML = '<option value="">선택</option>';
-                numSelect.disabled = true;
-                numSelect.innerHTML = '<option value="">선택</option>';
-                return;
-            }
-
-            const classes = [...new Set(students.filter(s => s.grade === grade).map(s => s.classNum))].sort();
-            classSelect.disabled = false;
-            classSelect.innerHTML = '<option value="">선택</option>' +
-                classes.map(c => `<option value="${c}">${parseInt(c)}반</option> `).join('');
-
-            numSelect.disabled = true;
-            numSelect.innerHTML = '<option value="">선택</option>';
+        function renderFilters() {
+            gradeSeg.replaceChildren(...grades.map(g => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = `${g}학년`;
+                b.setAttribute('aria-pressed', String(g === state.grade));
+                b.onclick = () => { state.grade = g; state.cls = classesOf(g)[0]; clearSearch(false); save(); render(); };
+                return b;
+            }));
+            classChips.replaceChildren(...classesOf(state.grade).map(c => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = `${c}반`;
+                b.setAttribute('aria-pressed', String(c === state.cls));
+                b.onclick = () => { state.cls = c; clearSearch(false); save(); render(); };
+                return b;
+            }));
+            const on = classChips.querySelector('[aria-pressed="true"]');
+            if (on) on.scrollIntoView({ inline: 'center', block: 'nearest' });
         }
 
-        function updateNumOptions(grade, classNum) {
-            if (!classNum) {
-                numSelect.disabled = true;
-                numSelect.innerHTML = '<option value="">선택</option>';
-                return;
-            }
+        function render() {
+            const searching = state.query !== '';
+            filters.hidden = searching;
+            state.list = searching
+                ? students.filter(s => s.name.includes(state.query))
+                : students.filter(s => s.grade === state.grade && s.cls === state.cls);
 
-            const filteredStudents = students
-                .filter(s => s.grade === grade && s.classNum === classNum)
-                .sort((a, b) => a.studentNum.localeCompare(b.studentNum));
+            $('rosterTitle').textContent = searching ? `"${state.query}" 검색 결과` : `${state.grade}학년 ${state.cls}반`;
+            $('rosterCount').textContent = `${state.list.length}명`;
+            $('empty').hidden = state.list.length > 0;
 
-            numSelect.disabled = false;
-            numSelect.innerHTML = '<option value="">선택</option>' +
-                filteredStudents.map(s => `<option value="${s.studentNum}">${parseInt(s.studentNum)}번 (${s.name})</option>`).join('');
+            if (!searching) renderFilters();
+
+            grid.replaceChildren(...state.list.map((s, i) => {
+                const li = document.createElement('li');
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'card';
+                b.setAttribute('aria-label', `${s.name}, ${s.grade}학년 ${s.cls}반 ${s.num}번, 크게 보기`);
+                b.onclick = () => openViewer(i);
+                const name = document.createElement('span');
+                name.className = 'name';
+                name.textContent = s.name;
+                const meta = document.createElement('span');
+                meta.className = 'meta';
+                meta.textContent = searching ? `${s.grade}학년 ${s.cls}반 ${s.num}번` : `${s.num}번`;
+                b.append(photoNode(s, i < 12), name, meta);
+                li.append(b);
+                return li;
+            }));
         }
 
-        // 이미지 로딩 실패 시 처리
-        function handleImageError(img) {
-            const currentSrc = img.src;
-
-            // 1. .jpg 실패 시 .JPG (대문자) 시도
-            if (currentSrc.toLowerCase().endsWith('.jpg') && !currentSrc.endsWith('.JPG')) {
-                console.log('소문자 .jpg 실패, 대문자 .JPG 시도 중...');
-                img.src = currentSrc.replace(/\.jpg$/i, '.JPG');
-                return;
-            }
-
-            // 2. 둘 다 실패 시 SVG 플레이스홀더 표시
-            img.onerror = null;
-            img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-                <svg width="320" height="420" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100%" height="100%" fill="#f1f5f9"/>
-                    <text x="50%" y="50%" font-family="sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle" dominant-baseline="middle">
-                        사진을 찾을 수 없음 (404)
-                    </text>
-                </svg>
-            `)}`;
+        function clearSearch(rerender = true) {
+            state.query = '';
+            searchInput.value = '';
+            searchBox.classList.remove('has-text');
+            if (rerender) render();
         }
 
-        function showStudent(grade, classNum, studentNum) {
-            if (!studentNum) return;
-
-            const student = students.find(s =>
-                s.grade === grade &&
-                s.classNum === classNum &&
-                s.studentNum === studentNum
-            );
-
-            if (student) {
-                const numericId = student.grade + student.classNum + student.studentNum;
-                // 경로를 ./students/ 형식으로 명시하여 상대 경로를 더 확실히 함
-                const finalPath = './' + IMAGE_FOLDER + numericId + '.jpg';
-
-                console.log('조회 시도:', student.name, '->', finalPath);
-
-                // 이미지 초기화 후 로드 (캐시 문제 방지)
-                studentImg.removeAttribute('src');
-                studentImg.onerror = () => handleImageError(studentImg);
-                studentImg.src = finalPath;
-
-                studentName.textContent = student.name;
-                studentInfoText.textContent = `${parseInt(student.grade)}학년 ${parseInt(student.classNum)}반 ${parseInt(student.studentNum)}번`;
-
-                placeholderView.classList.add('hidden');
-                studentCard.classList.remove('invisible');
-            }
-        }
-
-        function resetStudentView() {
-            studentCard.classList.add('invisible');
-            placeholderView.classList.remove('hidden');
-        }
-
-        // 브라우저 뒤로가기 방지용 dummy state
-        window.history.pushState(null, null, window.location.href);
-        window.onpopstate = function () {
-            window.history.pushState(null, null, window.location.href);
-        };
-
-        // 초기 구동
-        window.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            parseStudentData();
-            initSelects();
+        searchInput.addEventListener('input', () => {
+            state.query = searchInput.value.trim();
+            searchBox.classList.toggle('has-text', searchInput.value !== '');
+            render();
         });
+
+        // 결과가 한 명이면 Enter로 바로 크게 보기
+        searchInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && state.list.length === 1) openViewer(0);
+            if (e.key === 'Escape') clearSearch();
+        });
+
+        $('clearBtn').onclick = () => { clearSearch(); searchInput.focus(); };
+
+        /* 크게 보기 */
+        function showViewer() {
+            const s = state.list[state.index];
+            $('vPhoto').replaceWith(Object.assign(photoNode(s, true), { id: 'vPhoto' }));
+            $('vName').textContent = s.name;
+            $('vMeta').textContent = `${s.grade}학년 ${s.cls}반 ${s.num}번`;
+            $('vPos').textContent = `${state.index + 1} / ${state.list.length}`;
+            $('prevBtn').disabled = state.index === 0;
+            $('nextBtn').disabled = state.index === state.list.length - 1;
+            // 다음 사진 미리 받아 두기
+            const nxt = state.list[state.index + 1];
+            if (nxt) new Image().src = IMAGE_FOLDER + nxt.id + '.jpg';
+        }
+
+        function openViewer(i) {
+            state.index = i;
+            showViewer();
+            if (!viewer.open) viewer.showModal();
+        }
+
+        function step(d) {
+            const n = state.index + d;
+            if (n >= 0 && n < state.list.length) { state.index = n; showViewer(); }
+        }
+
+        $('prevBtn').onclick = () => step(-1);
+        $('nextBtn').onclick = () => step(1);
+        $('closeBtn').onclick = () => viewer.close();
+        viewer.addEventListener('click', e => { if (e.target === viewer) viewer.close(); });
+        viewer.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') step(-1);
+            if (e.key === 'ArrowRight') step(1);
+        });
+
+        // 브라우저 뒤로가기 방지 (기존 동작 유지)
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = () => window.history.pushState(null, null, window.location.href);
+
+        lucide.createIcons();
+        render();
     </script>
 </body>
 

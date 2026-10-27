@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# 학생 개인정보가 담긴 원본 자료(PDF, 엑셀)는 올리지 않음
+20260901/
+.impeccable/
